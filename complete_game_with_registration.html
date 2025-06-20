@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>小貓接食物遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #87CEEB, #98FB98);
+        }
+        
+        /* 註冊頁面樣式 */
+        #registrationPage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .registration-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .game-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .game-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .terms-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .terms-link {
+            color: #667eea;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .start-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .start-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 遊戲頁面樣式 */
+        #gamePage {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+        }
+        
+        #gameArea {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        #cat {
+            position: absolute;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #f5e6d3, #e6d0b8);
+            border-radius: 45%;
+            z-index: 10;
+            border: 3px solid #d4c0a1;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            overflow: visible;
+        }
+        
+        /* 貓咪的耳朵 */
+        #cat .ears {
+            position: absolute;
+            top: 5px;
+            left: 15px;
+            right: 15px;
+            height: 20px;
+            z-index: -1;
+        }
+        
+        #cat .ears::before,
+        #cat .ears::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 20px solid #f5e6d3;
+        }
+        
+        #cat .ears::before {
+            left: 0;
+        }
+        
+        #cat .ears::after {
+            right: 0;
+        }
+        
+        /* 貓咪的眼睛 */
+        #cat::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 18px;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #2a5d31 40%, #1a3d21 70%);
+            border-radius: 50%;
+            box-shadow: 30px 0 0 0 #2a5d31;
+        }
+        
+        /* 貓咪的鼻子 */
+        #cat::after {
+            content: '';
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 6px;
+            background: #ff9999;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+        
+        /* 貓咪的嘴巴 */
+        #cat .mouth {
+            position: absolute;
+            top: 52px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            border: 2px solid #333;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            background: transparent;
+        }
+        
+        /* 貓咪的鬍鬚 */
+        #cat .whiskers {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 20px;
+        }
+        
+        #cat .whiskers::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 8px;
+            width: 20px;
+            height: 1px;
+            background: #666;
+            box-shadow: 
+                0 4px 0 #666,
+                0 8px 0 #666,
+                54px 0 0 #666,
+                54px 4px 0 #666,
+                54px 8px 0 #666;
+        }
+        
+        .food {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .apple {
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0000);
+        }
+        
+        .banana {
+            background: radial-gradient(circle at 30% 30%, #ffd93d, #ff8c00);
+            border-radius: 60% 60% 60% 60% / 25% 25% 75% 75%;
+        }
+        
+        .bone {
+            background: #f5f5dc;
+            border-radius: 25px;
+            width: 45px;
+            height: 20px;
+            border: 2px solid #e6e6d4;
+        }
+        
+        .bone::before,
+        .bone::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #f5f5dc;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 2px solid #e6e6d4;
+        }
+        
+        .bone::before {
+            left: -8px;
+        }
+        
+        .bone::after {
+            right: -8px;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .ui-item {
+            background: rgba(0,0,0,0.4);
+            padding: 8px 12px;
+            border-radius: 15px;
+            margin: 2px;
+        }
+        
+        #player-info {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            color: #fff;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.4);
+            padding: 8px 12px;
+            border-radius: 15px;
+            z-index: 20;
+        }
+        
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 30;
+            min-width: 280px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 15px;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 20;
+        }
+        
+        .control-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.8);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .control-btn:active {
+            background: rgba(255,255,255,0.6);
+            transform: scale(0.9);
+        }
+        
+        #instructions {
+            position: absolute;
+            bottom: 210px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            z-index: 20;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        
+        /* Terms Modal */
+        #termsModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        /* 響應式設計 */
+        @media (min-width: 768px) {
+            #controls {
+                display: none;
+            }
+            
+            #instructions {
+                bottom: 20px;
+                font-size: 18px;
+            }
+            
+            #cat {
+                width: 70px;
+                height: 70px;
+                bottom: 30px;
+            }
+            
+            .food {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .bone {
+                width: 40px;
+                height: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .registration-form {
+                padding: 30px 20px;
+            }
+            
+            .game-title {
+                font-size: 24px;
+            }
+            
+            #ui {
+                font-size: 18px;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+            }
+            
+            .ui-item {
+                padding: 6px 10px;
+                font-size: 16px;
+            }
+            
+            #cat {
+                width: 70px;
+                height: 70px;
+                bottom: 150px;
+            }
+            
+            #gameOver {
+                padding: 30px 20px;
+                min-width: 250px;
+            }
+            
+            .control-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 20px;
+            }
+            
+            #instructions {
+                font-size: 14px;
+                bottom: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 註冊頁面 -->
+    <div id="registrationPage">
+        <div class="registration-form">
+            <h1 class="game-title">🐱 小貓接食物</h1>
+            <p class="game-subtitle">準備好挑戰了嗎？</p>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="playerName">姓名 *</label>
+                    <input type="text" id="playerName" required>
+                    <div class="error-message" id="nameError">請輸入姓名</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="playerEmail">電子郵件 *</label>
+                    <input type="email" id="playerEmail" required>
+                    <div class="error-message" id="emailError">請輸入有效的電子郵件</div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termsCheckbox" required>
+                    <div class="terms-text">
+                        我同意 <span class="terms-link" onclick="showTerms()">使用條款和條件</span> *
+                    </div>
+                </div>
+                <div class="error-message" id="termsError">請同意使用條款</div>
+                
+                <button type="submit" class="start-btn">開始遊戲 🎮</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 遊戲頁面 -->
+    <div id="gamePage">
+        <div id="gameContainer">
+            <div id="gameArea">
+                <div id="cat"></div>
+                <div id="ui">
+                    <div class="ui-item">分數: <span id="score">0</span></div>
+                    <div class="ui-item">時間: <span id="time">60</span>s</div>
+                    <div class="ui-item">生命: <span id="lives">3</span></div>
+                </div>
+                <div id="player-info">
+                    玩家: <span id="displayName"></span>
+                </div>
+                <div id="instructions">
+                    點擊下方按鈕或螢幕兩側移動小貓
+                </div>
+                <div id="controls">
+                    <div class="control-btn" id="leftBtn">←</div>
+                    <div class="control-btn" id="rightBtn">→</div>
+                </div>
+            </div>
+            <div id="gameOver">
+                <h2>遊戲結束!</h2>
+                <p style="margin: 15px 0;">最終分數: <span id="finalScore">0</span></p>
+                <p style="margin: 10px 0; font-size: 14px;">分數已自動儲存 ✓</p>
+                <button onclick="restartGame()">重新開始</button>
+                <button onclick="backToRegistration()">回到首頁</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Terms Modal -->
+    <div id="termsModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideTerms()">&times;</span>
+            <h2>使用條款和條件</h2>
+            <p><strong>生效日期：2025年6月</strong></p>
+            
+            <h3>1. 遊戲使用</h3>
+            <p>本遊戲僅供娛樂用途。玩家必須遵守公平遊戲原則。</p>
+            
+            <h3>2. 資料收集</h3>
+            <p>我們會收集您的姓名、電子郵件和遊戲分數，僅用於遊戲記錄和統計用途。</p>
+            
+            <h3>3. 隱私保護</h3>
+            <p>您的個人資料將受到保護，不會與第三方分享。</p>
+            
+            <h3>4. 免責聲明</h3>
+            <p>本遊戲按現狀提供，我們不對任何技術問題或損失承擔責任。</p>
+            
+            <h3>5. 修改權利</h3>
+            <p>我們保留隨時修改這些條款的權利。</p>
+            
+            <p style="margin-top: 20px;"><em>如有疑問，請聯繫我們。</em></p>
+        </div>
+    </div>
+
+    <script>
+        // 全域變數
+        let playerData = {
+            name: '',
+            email: '',
+            currentScore: 0
+        };
+        
+        // 註冊表單處理
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('playerName').value.trim();
+            const email = document.getElementById('playerEmail').value.trim();
+            const termsAccepted = document.getElementById('termsCheckbox').checked;
+            
+            // 清除之前的錯誤訊息
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            let isValid = true;
+            
+            // 驗證姓名
+            if (!name) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證電子郵件
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證條款同意
+            if (!termsAccepted) {
+                document.getElementById('termsError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // 儲存玩家資料
+                playerData.name = name;
+                playerData.email = email;
+                
+                // 顯示遊戲頁面
+                startGameSession();
+            }
+        });
+        
+        // 顯示遊戲頁面
+        function startGameSession() {
+            document.getElementById('registrationPage').style.display = 'none';
+            document.getElementById('gamePage').style.display = 'block';
+            document.getElementById('displayName').textContent = playerData.name;
+            
+            // 初始化遊戲
+            if (typeof game !== 'undefined') {
+                game.restart();
+            } else {
+                game = new Game();
+            }
+        }
+        
+        // 顯示/隱藏條款
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+        
+        function hideTerms() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+        
+        // 回到註冊頁面
+        function backToRegistration() {
+            document.getElementById('gamePage').style.display = 'none';
+            document.getElementById('registrationPage').style.display = 'block';
+            
+            // 清空表單
+            document.getElementById('registrationForm').reset();
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+        }
+        
+        // 儲存分數到後端
+        async function saveScoreToBackend(score, gameDuration = 0) {
+            const data = {
+                name: playerData.name,
+                email: playerData.email,
+                score: score,
+                gameDuration: gameDuration,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                // 替換成你的 Google Apps Script Web App URL
+                const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyobFaieP8cRHaJnCfTW8Nlk95X4MPvkmRzQFDeFs1CVvG2K7VsEfD7FYZDV7H-473d/exec';
+                
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script 需要這個
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('分數已儲存到 Google Sheets');
+                
+                // 備份到 localStorage
+                let scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+                scores.push(data);
+                localStorage.setItem('gameScores', JSON.stringify(scores));
+                
+                return true;
+            } catch (error) {
+                console.error('儲存分數失敗:', error);
+                
+                // 如果網路失敗，至少存到 localStorage
+                let scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+                scores.push(data);
+                localStorage.setItem('gameScores', JSON.stringify(scores));
+                
+                return false;
+            }
+        }
+        
+        // 遊戲類別
+        class Game {
+            constructor() {
+                this.cat = document.getElementById('cat');
+                this.gameArea = document.getElementById('gameArea');
+                this.scoreElement = document.getElementById('score');
+                this.timeElement = document.getElementById('time');
+                this.livesElement = document.getElementById('lives');
+                this.gameOverElement = document.getElementById('gameOver');
+                this.finalScoreElement = document.getElementById('finalScore');
+                this.leftBtn = document.getElementById('leftBtn');
+                this.rightBtn = document.getElementById('rightBtn');
+                
+                this.catPosition = 50;
+                this.score = 0;
+                this.timeLeft = 60;
+                this.lives = 3;
+                this.foods = [];
+                this.gameRunning = false;
+                this.gameSpeed = 2.5;
+                this.foodTypes = ['apple', 'banana', 'bone'];
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupControls();
+                this.createCatFeatures();
+                this.startGame();
+            }
+            
+            createCatFeatures() {
+                // 添加貓咪的嘴巴
+                const mouth = document.createElement('div');
+                mouth.className = 'mouth';
+                this.cat.appendChild(mouth);
+                
+                // 添加貓咪的鬍鬚
+                const whiskers = document.createElement('div');
+                whiskers.className = 'whiskers';
+                this.cat.appendChild(whiskers);
+                
+                // 添加貓咪的耳朵
+                const ears = document.createElement('div');
+                ears.className = 'ears';
+                this.cat.appendChild(ears);
+            }
+            
+            setupControls() {
+                // 手機按鈕控制
+                this.leftBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.moveCat(-8);
+                });
+                
+                this.rightBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.moveCat(8);
+                });
+                
+                // 點擊按鈕控制
+                this.leftBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.moveCat(-8);
+                });
+                
+                this.rightBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.moveCat(8);
+                });
+                
+                // 鍵盤控制
+                document.addEventListener('keydown', (e) => {
+                    if (!this.gameRunning) return;
+                    
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                        case 'a':
+                        case 'A':
+                            this.moveCat(-6);
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                        case 'D':
+                            this.moveCat(6);
+                            break;
+                    }
+                });
+                
+                // 觸控螢幕控制
+                this.gameArea.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (!this.gameRunning) return;
+                    
+                    const touch = e.touches[0];
+                    const screenWidth = window.innerWidth;
+                    const touchX = touch.clientX;
+                    
+                    if (touch.target.classList.contains('control-btn')) return;
+                    
+                    if (touchX < screenWidth / 2) {
+                        this.moveCat(-10);
+                    } else {
+                        this.moveCat(10);
+                    }
+                });
+                
+                // 防止頁面滾動
+                document.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                }, { passive: false });
+            }
+            
+            moveCat(direction) {
+                this.catPosition += direction;
+                this.catPosition = Math.max(8, Math.min(92, this.catPosition));
+                this.cat.style.left = this.catPosition + '%';
+            }
+            
+            startGame() {
+                this.gameRunning = true;
+                this.gameOverElement.style.display = 'none';
+                
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    this.timeElement.textContent = this.timeLeft;
+                    
+                    if (this.timeLeft <= 0) {
+                        this.endGame();
+                    }
+                }, 1000);
+                
+                this.gameLoop = setInterval(() => {
+                    this.spawnFood();
+                    this.updateFoods();
+                    this.checkCollisions();
+                }, 80);
+            }
+            
+            spawnFood() {
+                if (Math.random() < 0.04) {
+                    const food = document.createElement('div');
+                    food.className = 'food ' + this.foodTypes[Math.floor(Math.random() * this.foodTypes.length)];
+                    food.style.left = Math.random() * 85 + 7.5 + '%';
+                    food.style.top = '-50px';
+                    
+                    this.gameArea.appendChild(food);
+                    this.foods.push({
+                        element: food,
+                        x: parseFloat(food.style.left),
+                        y: -50
+                    });
+                }
+            }
+            
+            updateFoods() {
+                this.foods.forEach((food, index) => {
+                    food.y += this.gameSpeed;
+                    food.element.style.top = food.y + 'px';
+                    
+                    if (food.y > window.innerHeight) {
+                        food.element.remove();
+                        this.foods.splice(index, 1);
+                        this.lives--;
+                        this.livesElement.textContent = this.lives;
+                        
+                        if (this.lives <= 0) {
+                            this.endGame();
+                        }
+                    }
+                });
+            }
+            
+            checkCollisions() {
+                const catRect = this.cat.getBoundingClientRect();
+                
+                this.foods.forEach((food, index) => {
+                    const foodRect = food.element.getBoundingClientRect();
+                    
+                    if (this.isColliding(catRect, foodRect)) {
+                        let points = 10;
+                        if (food.element.classList.contains('bone')) points = 20;
+                        if (food.element.classList.contains('banana')) points = 15;
+                        
+                        this.score += points;
+                        this.scoreElement.textContent = this.score;
+                        playerData.currentScore = this.score;
+                        
+                        food.element.remove();
+                        this.foods.splice(index, 1);
+                        
+                        if (this.score % 100 === 0) {
+                            this.gameSpeed = Math.min(this.gameSpeed + 0.5, 6);
+                        }
+                    }
+                });
+            }
+            
+            isColliding(rect1, rect2) {
+                const buffer = 5;
+                return !(rect1.right < rect2.left + buffer || 
+                        rect1.left > rect2.right - buffer || 
+                        rect1.bottom < rect2.top + buffer || 
+                        rect1.top > rect2.bottom - buffer);
+            }
+            
+            async endGame() {
+                this.gameRunning = false;
+                clearInterval(this.timer);
+                clearInterval(this.gameLoop);
+                
+                this.finalScoreElement.textContent = this.score;
+                
+                // 計算遊戲時長
+                const gameDuration = 60 - this.timeLeft;
+                
+                // 儲存分數
+                await saveScoreToBackend(this.score, gameDuration);
+                
+                this.gameOverElement.style.display = 'block';
+            }
+            
+            restart() {
+                this.foods.forEach(food => food.element.remove());
+                this.foods = [];
+                
+                this.catPosition = 50;
+                this.cat.style.left = '50%';
+                this.score = 0;
+                this.timeLeft = 60;
+                this.lives = 3;
+                this.gameSpeed = 2.5;
+                
+                this.scoreElement.textContent = '0';
+                this.timeElement.textContent = '60';
+                this.livesElement.textContent = '3';
+                
+                playerData.currentScore = 0;
+                
+                this.startGame();
+            }
+        }
+        
+        let game;
+        
+        function restartGame() {
+            game.restart();
+        }
+        
+        // 關閉 modal 當點擊外面
+        window.onclick = function(event) {
+            const modal = document.getElementById('termsModal');
+            if (event.target == modal) {
+                hideTerms();
+            }
+        }
