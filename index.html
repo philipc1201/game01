@@ -22,11 +22,20 @@
         
         /* 註冊頁面樣式 */
         #registrationPage {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+        }
+        
+        #registrationPage.hidden {
+            display: none !important;
         }
         
         .registration-form {
@@ -37,6 +46,8 @@
             max-width: 400px;
             width: 90%;
             text-align: center;
+            position: relative;
+            z-index: 1001;
         }
         
         .game-title {
@@ -100,12 +111,6 @@
             line-height: 1.4;
         }
         
-        .terms-link {
-            color: #667eea;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        
         .start-btn {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
@@ -128,20 +133,20 @@
             transform: none;
         }
         
-        .error-message {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
         /* 遊戲頁面樣式 */
         #gamePage {
             display: none;
             width: 100vw;
             height: 100vh;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             overflow: hidden;
+            z-index: 1001;
+        }
+        
+        #gamePage.active {
+            display: block !important;
         }
         
         #gameContainer {
@@ -149,7 +154,10 @@
             height: 100vh;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
         }
         
         #gameArea {
@@ -165,153 +173,36 @@
             transform: translateX(-50%);
             width: 80px;
             height: 80px;
-            background: linear-gradient(145deg, #f5e6d3, #e6d0b8);
-            border-radius: 45%;
+            background-image: url('images/cat.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             z-index: 10;
-            border: 3px solid #d4c0a1;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            overflow: visible;
-        }
-        
-        /* 貓咪的耳朵 */
-        #cat .ears {
-            position: absolute;
-            top: 5px;
-            left: 15px;
-            right: 15px;
-            height: 20px;
-            z-index: -1;
-        }
-        
-        #cat .ears::before,
-        #cat .ears::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 20px solid #f5e6d3;
-        }
-        
-        #cat .ears::before {
-            left: 0;
-        }
-        
-        #cat .ears::after {
-            right: 0;
-        }
-        
-        /* 貓咪的眼睛 */
-        #cat::before {
-            content: '';
-            position: absolute;
-            top: 25px;
-            left: 18px;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle, #2a5d31 40%, #1a3d21 70%);
             border-radius: 50%;
-            box-shadow: 30px 0 0 0 #2a5d31;
-        }
-        
-        /* 貓咪的鼻子 */
-        #cat::after {
-            content: '';
-            position: absolute;
-            top: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 6px;
-            background: #ff9999;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-        }
-        
-        /* 貓咪的嘴巴 */
-        #cat .mouth {
-            position: absolute;
-            top: 52px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 10px;
-            border: 2px solid #333;
-            border-top: none;
-            border-radius: 0 0 50% 50%;
-            background: transparent;
-        }
-        
-        /* 貓咪的鬍鬚 */
-        #cat .whiskers {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            right: 0;
-            height: 20px;
-        }
-        
-        #cat .whiskers::before {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 8px;
-            width: 20px;
-            height: 1px;
-            background: #666;
-            box-shadow: 
-                0 4px 0 #666,
-                0 8px 0 #666,
-                54px 0 0 #666,
-                54px 4px 0 #666,
-                54px 8px 0 #666;
         }
         
         .food {
             position: absolute;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
             z-index: 5;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         
         .apple {
-            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0000);
+            background-image: url('images/apple.png');
         }
         
         .banana {
-            background: radial-gradient(circle at 30% 30%, #ffd93d, #ff8c00);
-            border-radius: 60% 60% 60% 60% / 25% 25% 75% 75%;
+            background-image: url('images/banana.png');
         }
         
         .bone {
-            background: #f5f5dc;
-            border-radius: 25px;
+            background-image: url('images/bone.png');
             width: 45px;
             height: 20px;
-            border: 2px solid #e6e6d4;
-        }
-        
-        .bone::before,
-        .bone::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background: #f5f5dc;
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 2px solid #e6e6d4;
-        }
-        
-        .bone::before {
-            left: -8px;
-        }
-        
-        .bone::after {
-            right: -8px;
         }
         
         #ui {
@@ -431,41 +322,6 @@
             border-radius: 20px;
         }
         
-        /* Terms Modal */
-        #termsModal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
-        }
-        
         /* 響應式設計 */
         @media (min-width: 768px) {
             #controls {
@@ -550,24 +406,21 @@
                 <div class="form-group">
                     <label for="playerName">姓名 *</label>
                     <input type="text" id="playerName" required>
-                    <div class="error-message" id="nameError">請輸入姓名</div>
                 </div>
                 
                 <div class="form-group">
                     <label for="playerEmail">電子郵件 *</label>
                     <input type="email" id="playerEmail" required>
-                    <div class="error-message" id="emailError">請輸入有效的電子郵件</div>
                 </div>
                 
                 <div class="checkbox-group">
                     <input type="checkbox" id="termsCheckbox" required>
                     <div class="terms-text">
-                        我同意 <span class="terms-link" onclick="showTerms()">使用條款和條件</span> *
+                        我同意使用條款和條件 *
                     </div>
                 </div>
-                <div class="error-message" id="termsError">請同意使用條款</div>
                 
-                <button type="submit" class="start-btn">開始遊戲 🎮</button>
+                <button type="button" class="start-btn" onclick="startGame()">開始遊戲 🎮</button>
             </form>
         </div>
     </div>
@@ -602,32 +455,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Terms Modal -->
-    <div id="termsModal">
-        <div class="modal-content">
-            <span class="close" onclick="hideTerms()">&times;</span>
-            <h2>使用條款和條件</h2>
-            <p><strong>生效日期：2025年6月</strong></p>
-            
-            <h3>1. 遊戲使用</h3>
-            <p>本遊戲僅供娛樂用途。玩家必須遵守公平遊戲原則。</p>
-            
-            <h3>2. 資料收集</h3>
-            <p>我們會收集您的姓名、電子郵件和遊戲分數，僅用於遊戲記錄和統計用途。</p>
-            
-            <h3>3. 隱私保護</h3>
-            <p>您的個人資料將受到保護，不會與第三方分享。</p>
-            
-            <h3>4. 免責聲明</h3>
-            <p>本遊戲按現狀提供，我們不對任何技術問題或損失承擔責任。</p>
-            
-            <h3>5. 修改權利</h3>
-            <p>我們保留隨時修改這些條款的權利。</p>
-            
-            <p style="margin-top: 20px;"><em>如有疑問，請聯繫我們。</em></p>
-        </div>
-    </div>
 
     <script>
         // 全域變數
@@ -637,83 +464,14 @@
             currentScore: 0
         };
         
-        // 註冊表單處理
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('playerName').value.trim();
-            const email = document.getElementById('playerEmail').value.trim();
-            const termsAccepted = document.getElementById('termsCheckbox').checked;
-            
-            // 清除之前的錯誤訊息
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-            
-            let isValid = true;
-            
-            // 驗證姓名
-            if (!name) {
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            }
-            
-            // 驗證電子郵件
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email || !emailRegex.test(email)) {
-                document.getElementById('emailError').style.display = 'block';
-                isValid = false;
-            }
-            
-            // 驗證條款同意
-            if (!termsAccepted) {
-                document.getElementById('termsError').style.display = 'block';
-                isValid = false;
-            }
-            
-            if (isValid) {
-                // 儲存玩家資料
-                playerData.name = name;
-                playerData.email = email;
-                
-                // 顯示遊戲頁面
-                startGameSession();
-            }
-        });
+        let game;
         
-        // 顯示遊戲頁面
-        function startGameSession() {
-            document.getElementById('registrationPage').style.display = 'none';
-            document.getElementById('gamePage').style.display = 'block';
-            document.getElementById('displayName').textContent = playerData.name;
-            
-            // 初始化遊戲
-            if (typeof game !== 'undefined') {
-                game.restart();
-            } else {
-                game = new Game();
-            }
-        }
-        
-        // 顯示/隱藏條款
-        function showTerms() {
-            document.getElementById('termsModal').style.display = 'block';
-        }
-        
-        function hideTerms() {
-            document.getElementById('termsModal').style.display = 'none';
-        }
-        
-        // 回到註冊頁面
-        function backToRegistration() {
-            document.getElementById('gamePage').style.display = 'none';
-            document.getElementById('registrationPage').style.display = 'block';
-            
-            // 清空表單
-            document.getElementById('registrationForm').reset();
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-        }
-        
-        // 儲存分數到後端
+        // 儲存分數到後端 - 完整版本
         async function saveScoreToBackend(score, gameDuration = 0) {
+            console.log('🎯 開始儲存分數到後端');
+            console.log('分數:', score);
+            console.log('遊戲時長:', gameDuration);
+            
             const data = {
                 name: playerData.name,
                 email: playerData.email,
@@ -722,42 +480,214 @@
                 timestamp: new Date().toISOString()
             };
             
+            console.log('準備發送的資料:', JSON.stringify(data, null, 2));
+            
+            // 先備份到 localStorage
+            let scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+            scores.push(data);
+            localStorage.setItem('gameScores', JSON.stringify(scores));
+            console.log('✅ 分數已儲存到 localStorage');
+            
             try {
-                // 替換成你的 Google Apps Script Web App URL
-                const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyobFaieP8cRHaJnCfTW8Nlk95X4MPvkmRzQFDeFs1CVvG2K7VsEfD7FYZDV7H-473d/exec';
+                // 🔥 你的 Google Apps Script Web App URL
+                const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxrjsArFWno3N3hzux6xSO_OUUMwuc7D-HyOtOpooLVnRHI35lZeaK66SvNNMI5G9oN/exec';
                 
-                const response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Google Apps Script 需要這個
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
+                // 構建 URL 參數
+                const params = new URLSearchParams({
+                    name: data.name,
+                    email: data.email,
+                    score: data.score,
+                    gameDuration: data.gameDuration,
+                    timestamp: data.timestamp
                 });
                 
-                console.log('分數已儲存到 Google Sheets');
+                const fullURL = `${WEB_APP_URL}?${params.toString()}`;
+                console.log('🔄 發送資料到:', fullURL);
                 
-                // 備份到 localStorage
-                let scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
-                scores.push(data);
-                localStorage.setItem('gameScores', JSON.stringify(scores));
+                // 使用動態創建的 iframe 方法
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = fullURL;
+                
+                iframe.onload = function() {
+                    console.log('✅ 資料已發送到 Google Sheets');
+                    console.log('📊 請檢查 Google Sheets 是否有新資料');
+                    setTimeout(() => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                    }, 1000);
+                };
+                
+                iframe.onerror = function() {
+                    console.log('⚠️ 發送完成（可能成功，瀏覽器安全限制）');
+                    console.log('📊 請檢查 Google Sheets 是否有新資料');
+                    setTimeout(() => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                    }, 1000);
+                };
+                
+                // 5秒後自動清理
+                setTimeout(() => {
+                    if (document.body.contains(iframe)) {
+                        console.log('🧹 清理 iframe');
+                        document.body.removeChild(iframe);
+                    }
+                }, 5000);
+                
+                document.body.appendChild(iframe);
                 
                 return true;
+                
             } catch (error) {
-                console.error('儲存分數失敗:', error);
-                
-                // 如果網路失敗，至少存到 localStorage
-                let scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
-                scores.push(data);
-                localStorage.setItem('gameScores', JSON.stringify(scores));
-                
+                console.error('❌ 網路請求失敗:', error.message);
+                console.log('📋 資料已安全儲存到 localStorage');
+                console.log('🔧 請執行: exportToCSV() 手動匯出資料');
                 return false;
+            }
+        }
+        
+        // 匯出 localStorage 資料為 CSV
+        function exportToCSV() {
+            const scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+            if (scores.length === 0) {
+                console.log('❌ 沒有遊戲記錄');
+                return;
+            }
+            
+            let csv = '日期時間,姓名,電子郵件,分數,遊戲時長\n';
+            scores.forEach(score => {
+                const date = new Date(score.timestamp).toLocaleString('zh-TW');
+                csv += `"${date}","${score.name}","${score.email}",${score.score},${score.gameDuration}\n`;
+            });
+            
+            console.log('📋 CSV 格式資料 (可直接複製到 Excel):');
+            console.log(csv);
+            
+            // 嘗試複製到剪貼簿
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(csv).then(() => {
+                    console.log('✅ CSV 已複製到剪貼簿');
+                }).catch(() => {
+                    console.log('⚠️ 無法自動複製，請手動複製上面的資料');
+                });
+            }
+            
+            return csv;
+        }
+        
+        // 開始遊戲函數
+        function startGame() {
+            console.log('startGame 被呼叫');
+            
+            const name = document.getElementById('playerName').value.trim();
+            const email = document.getElementById('playerEmail').value.trim();
+            const termsAccepted = document.getElementById('termsCheckbox').checked;
+            
+            console.log('姓名:', name);
+            console.log('Email:', email);
+            console.log('同意條款:', termsAccepted);
+            
+            // 驗證
+            if (!name) {
+                alert('請輸入姓名');
+                console.log('驗證失敗: 姓名為空');
+                return;
+            }
+            
+            if (!email || !email.includes('@')) {
+                alert('請輸入有效的 email');
+                console.log('驗證失敗: Email 無效');
+                return;
+            }
+            
+            if (!termsAccepted) {
+                alert('請同意使用條款');
+                console.log('驗證失敗: 未同意條款');
+                return;
+            }
+            
+            console.log('✅ 表單驗證通過');
+            
+            // 儲存玩家資料
+            playerData.name = name;
+            playerData.email = email;
+            
+            console.log('準備切換到遊戲頁面');
+            
+            // 切換頁面
+            const registrationPage = document.getElementById('registrationPage');
+            const gamePage = document.getElementById('gamePage');
+            
+            console.log('註冊頁面元素:', registrationPage ? '找到' : '找不到');
+            console.log('遊戲頁面元素:', gamePage ? '找到' : '找不到');
+            
+            if (!registrationPage || !gamePage) {
+                console.error('❌ 找不到頁面元素');
+                return;
+            }
+            
+            console.log('隱藏註冊頁面');
+            registrationPage.style.display = 'none';
+            registrationPage.classList.add('hidden');
+            
+            console.log('顯示遊戲頁面');
+            gamePage.style.display = 'block';
+            gamePage.classList.add('active');
+            gamePage.style.zIndex = '9999';
+            
+            console.log('設定玩家名稱');
+            const displayNameElement = document.getElementById('displayName');
+            if (displayNameElement) {
+                displayNameElement.textContent = playerData.name;
+                console.log('✅ 玩家名稱已設定:', playerData.name);
+            } else {
+                console.error('❌ 找不到 displayName 元素');
+            }
+            
+            // 檢查頁面切換結果
+            console.log('註冊頁面 display:', window.getComputedStyle(registrationPage).display);
+            console.log('遊戲頁面 display:', window.getComputedStyle(gamePage).display);
+            
+            // 初始化遊戲
+            console.log('準備初始化遊戲');
+            try {
+                game = new Game();
+                console.log('✅ 遊戲初始化成功');
+            } catch (error) {
+                console.error('❌ 遊戲初始化失敗:', error);
+            }
+        }
+        
+        // 回到註冊頁面
+        function backToRegistration() {
+            console.log('回到註冊頁面');
+            
+            const gamePage = document.getElementById('gamePage');
+            gamePage.style.display = 'none';
+            gamePage.classList.remove('active');
+            
+            const registrationPage = document.getElementById('registrationPage');
+            registrationPage.classList.remove('hidden');
+            registrationPage.style.display = 'flex';
+            registrationPage.style.zIndex = '9999';
+            
+            document.getElementById('registrationForm').reset();
+        }
+        
+        // 重新開始遊戲
+        function restartGame() {
+            if (game) {
+                game.restart();
             }
         }
         
         // 遊戲類別
         class Game {
             constructor() {
+                console.log('Game 建構子被呼叫');
                 this.cat = document.getElementById('cat');
                 this.gameArea = document.getElementById('gameArea');
                 this.scoreElement = document.getElementById('score');
@@ -781,26 +711,9 @@
             }
             
             init() {
+                console.log('遊戲初始化');
                 this.setupControls();
-                this.createCatFeatures();
                 this.startGame();
-            }
-            
-            createCatFeatures() {
-                // 添加貓咪的嘴巴
-                const mouth = document.createElement('div');
-                mouth.className = 'mouth';
-                this.cat.appendChild(mouth);
-                
-                // 添加貓咪的鬍鬚
-                const whiskers = document.createElement('div');
-                whiskers.className = 'whiskers';
-                this.cat.appendChild(whiskers);
-                
-                // 添加貓咪的耳朵
-                const ears = document.createElement('div');
-                ears.className = 'ears';
-                this.cat.appendChild(ears);
             }
             
             setupControls() {
@@ -815,7 +728,6 @@
                     this.moveCat(8);
                 });
                 
-                // 點擊按鈕控制
                 this.leftBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     this.moveCat(-8);
@@ -875,6 +787,7 @@
             }
             
             startGame() {
+                console.log('遊戲開始');
                 this.gameRunning = true;
                 this.gameOverElement.style.display = 'none';
                 
@@ -941,7 +854,6 @@
                         
                         this.score += points;
                         this.scoreElement.textContent = this.score;
-                        playerData.currentScore = this.score;
                         
                         food.element.remove();
                         this.foods.splice(index, 1);
@@ -961,7 +873,8 @@
                         rect1.top > rect2.bottom - buffer);
             }
             
-            async endGame() {
+            endGame() {
+                console.log('遊戲結束');
                 this.gameRunning = false;
                 clearInterval(this.timer);
                 clearInterval(this.gameLoop);
@@ -972,12 +885,13 @@
                 const gameDuration = 60 - this.timeLeft;
                 
                 // 儲存分數
-                await saveScoreToBackend(this.score, gameDuration);
+                saveScoreToBackend(this.score, gameDuration);
                 
                 this.gameOverElement.style.display = 'block';
             }
             
             restart() {
+                console.log('重新開始遊戲');
                 this.foods.forEach(food => food.element.remove());
                 this.foods = [];
                 
@@ -992,22 +906,9 @@
                 this.timeElement.textContent = '60';
                 this.livesElement.textContent = '3';
                 
-                playerData.currentScore = 0;
-                
                 this.startGame();
             }
         }
-        
-        let game;
-        
-        function restartGame() {
-            game.restart();
-        }
-        
-        // 關閉 modal 當點擊外面
-        window.onclick = function(event) {
-            const modal = document.getElementById('termsModal');
-            if (event.target == modal) {
-                hideTerms();
-            }
-        }
+    </script>
+</body>
+</html>
